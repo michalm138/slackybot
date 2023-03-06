@@ -5,7 +5,7 @@ import json
 def post_request(url, data, token):
     """
     :param url: (string)
-    :param data: (dict) 
+    :param data: (dict)
     :param token: (string) Token of the Slack bot
     :return: (bool, dict) True and response JSON if the request is a success
     """
