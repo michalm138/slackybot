@@ -5,6 +5,13 @@ class SlackInitializeError(Exception):
         super().__init__(self.message)
 
 
+class Unknown(Exception):
+
+    def __init__(self, message="Unknown exception"):
+        self.message = message
+        super().__init__(self.message)
+
+
 class MessageNotSend(Exception):
 
     def __init__(self, message="The message has not been sent"):
@@ -22,5 +29,19 @@ class MessageNotUpdated(Exception):
 class NotASlackMessage(Exception):
 
     def __init__(self, message="Given value is not a SlackMessage object"):
+        self.message = message
+        super().__init__(self.message)
+
+
+class ChannelNotFound(Exception):
+
+    def __init__(self, message="Given channel not found"):
+        self.message = message
+        super().__init__(self.message)
+
+
+class MissingText(Exception):
+
+    def __init__(self, message="There is no text"):
         self.message = message
         super().__init__(self.message)

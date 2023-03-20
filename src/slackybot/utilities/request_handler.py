@@ -12,9 +12,6 @@ def post_request(url, data, token):
     try:
         headers = {'Authorization': f'Bearer {token}'}
         response = requests.post(url, data, headers=headers)
-        if response.status_code == 200:
-            if not response.json()['ok']:
-                return False, {}
-            return True, response.json()
+        return response.json()
     except (requests.ConnectionError, json.JSONDecodeError, Exception):
-        return False, {}
+        return {}
