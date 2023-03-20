@@ -17,6 +17,7 @@ def test_initialize_slack_object():
 def test_initialize_slack_object_without_token():
     with pytest.raises(exceptions.SlackInitializeError):
         slack = Slack()
+        slack.send_message(channel='tests', text='Unit test message')
 
 
 def test_send_message():
