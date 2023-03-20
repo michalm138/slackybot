@@ -10,6 +10,7 @@ class SlackMessage:
         self._token = token
         self._ts = data['ts']
         self._channel = data['channel']
+        self._deleted = False
 
         self.channel = channel
         self.text = text
@@ -28,6 +29,22 @@ class SlackMessage:
         ):
             if output['ok']:
                 self.text = text
+            else:
+                raise helpers.get_exception(output)
+        else:
+            raise exceptions.MessageNotUpdated
+
+    def delete(self):
+        if self._deleted:
+            raise exceptions.MessageAlreadyDeleted
+
+        if output := request_handler.post_request(
+                config.data['urls']['delete_message'],
+                {'channel': self._channel, 'ts': self._ts},
+                self._token,
+        ):
+            if output['ok']:
+                self._deleted = True
             else:
                 raise helpers.get_exception(output)
         else:

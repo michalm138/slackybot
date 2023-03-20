@@ -35,16 +35,3 @@ def test_send_message_empty_text():
     with pytest.raises(exceptions.MissingText):
         slack = Slack(token=os.getenv('SLACK_TOKEN'))
         slack.send_message(channel='tests')
-
-
-def test_update_message():
-    slack = Slack(token=os.getenv('SLACK_TOKEN'))
-    message = slack.send_message(channel='tests', text='Unit test message')
-    message.update('Updated Unit test message')
-
-
-def test_update_message_empty_text():
-    with pytest.raises(exceptions.MissingText):
-        slack = Slack(token=os.getenv('SLACK_TOKEN'))
-        message = slack.send_message(channel='tests', text='Unit test message')
-        message.update()

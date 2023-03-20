@@ -7,8 +7,8 @@ class SlackInitializeError(Exception):
 
 class Unknown(Exception):
 
-    def __init__(self, message="Unknown exception"):
-        self.message = message
+    def __init__(self, message=""):
+        self.message = f"Unknown exception ({message})"
         super().__init__(self.message)
 
 
@@ -29,6 +29,20 @@ class MessageNotUpdated(Exception):
 class NotASlackMessage(Exception):
 
     def __init__(self, message="Given value is not a SlackMessage object"):
+        self.message = message
+        super().__init__(self.message)
+
+
+class MessageNotFound(Exception):
+
+    def __init__(self, message="The message has not been found"):
+        self.message = message
+        super().__init__(self.message)
+
+
+class MessageAlreadyDeleted(Exception):
+
+    def __init__(self, message="The message has been already deleted"):
         self.message = message
         super().__init__(self.message)
 
