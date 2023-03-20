@@ -24,27 +24,13 @@ class Slack:
             self._token,
         ):
             if output['ok']:
-                slack_message = SlackMessage(channel, text, output)
+                slack_message = SlackMessage(self._token, channel, text, output)
                 self._messages.append(slack_message)
                 return slack_message
             else:
                 raise helpers.get_exception(output)
         else:
             raise exceptions.MessageNotSend
-
-    def update_message(self, message, text):
-        if not isinstance(message, SlackMessage):
-            raise exceptions.NotASlackMessage
-
-        if request_handler.post_request(
-            config.data['urls']['update_message'],
-            {'channel': message._channel, 'ts': message._ts, 'text': text},
-            self._token,
-        ):
-            message.message = text
-
-        else:
-            raise exceptions.MessageNotUpdated
 
     def get_messages(self):
         return self._messages[:]
