@@ -1,4 +1,4 @@
-from .messaging import SlackMessage
+from .messaging import Message
 from .utilities import request_handler, config, helpers
 from . import exceptions
 
@@ -24,7 +24,7 @@ class Slack:
             self._token,
         ):
             if output['ok']:
-                slack_message = SlackMessage(self._token, channel, text, output)
+                slack_message = Message(self._token, channel, text, output)
                 self._messages.append(slack_message)
                 return slack_message
             else:

@@ -47,6 +47,13 @@ class MessageAlreadyDeleted(Exception):
         super().__init__(self.message)
 
 
+class MessageNotDeleted(Exception):
+
+    def __init__(self, message="The message has not been deleted"):
+        self.message = message
+        super().__init__(self.message)
+
+
 class ChannelNotFound(Exception):
 
     def __init__(self, message="Given channel not found"):

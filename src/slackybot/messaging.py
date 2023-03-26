@@ -48,4 +48,33 @@ class SlackMessage:
             else:
                 raise helpers.get_exception(output)
         else:
-            raise exceptions.MessageNotUpdated
+            raise exceptions.MessageNotDeleted
+
+
+class Message(SlackMessage):
+
+    def __init__(self, token, channel, text, data):
+        super().__init__(token, channel, text, data)
+        self._replies = []
+
+    def send_reply(self, text=''):
+        if output := request_handler.post_request(
+                config.data['urls']['post_message'],
+                {'channel': self.channel, 'thread_ts': self._ts, 'text': text},
+                self._token,
+        ):
+            if output['ok']:
+                reply = Reply(self._token, self.channel, text, output)
+                self._replies.append(reply)
+                return reply
+            else:
+                raise helpers.get_exception(output)
+        else:
+            raise exceptions.MessageNotSend
+
+    def get_replies(self):
+        return self._replies[:]
+
+
+class Reply(SlackMessage):
+    pass
