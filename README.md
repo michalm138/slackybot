@@ -13,7 +13,6 @@ Import and initialize the slack object
 from slackybot import Slack
 
 slack = Slack(token='XXX')
-slack.send_message(channel='', text='')
 ```
 As a best practice, it is better to pass the token using an environment variable (e.g. `.env` file)
 
