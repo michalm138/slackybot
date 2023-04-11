@@ -22,6 +22,14 @@ class SlackMessage:
         return f'<{self.__class__.__name__} {self.id}>'
 
     def update(self, text=''):
+        """Updates the message.
+
+        Args:
+            text (string): New text. Old one will be replaced.
+
+        Returns:
+            None
+        """
         if output := request_handler.post_request(
                 config.data['urls']['update_message'],
                 {'channel': self._channel, 'ts': self._ts, 'text': text},
@@ -35,6 +43,11 @@ class SlackMessage:
             raise exceptions.MessageNotUpdated
 
     def delete(self):
+        """Deletes the message.
+
+        Returns:
+            None
+        """
         if self._deleted:
             raise exceptions.MessageAlreadyDeleted
 
@@ -58,6 +71,15 @@ class Message(SlackMessage):
         self._replies = []
 
     def send_reply(self, text=''):
+        """Sends reply in the message thread.
+
+        Args:
+            text (string): Text to be sent.
+
+        Returns:
+            Object: <Reply>
+
+        """
         if output := request_handler.post_request(
                 config.data['urls']['post_message'],
                 {'channel': self.channel, 'thread_ts': self._ts, 'text': text},
@@ -73,6 +95,11 @@ class Message(SlackMessage):
             raise exceptions.MessageNotSend
 
     def get_replies(self):
+        """Lists all sent replies to the message thread.
+
+        Returns:
+            List: Reply objects
+        """
         return self._replies[:]
 
 

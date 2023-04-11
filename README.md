@@ -6,6 +6,8 @@ This Python package helps you with sending messages to Slack. It offers an objec
 ```commandline
 python -m pip install slackybot
 ```
+Add following token scopes to your Slack bot:  
+`channels:join` `channels:read` `chat:write` `chat:write.customize` `chat:write.public`
 
 ### Simple usage
 Import and initialize the slack object

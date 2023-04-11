@@ -12,11 +12,14 @@ class Slack:
         self._messages = []
 
     def send_message(self, channel='', text=''):
-        """
-        Send message to the Slack
-        :param channel: (string) Channel name
-        :param text: (string) Text message
-        :return: (object) SlackMessage
+        """Sends simple text message.
+
+        Args:
+            channel (string): Channel name.
+            text (string): Text to be sent.
+
+        Returns:
+            Object: <Message>
         """
         if output := request_handler.post_request(
             config.data['urls']['post_message'],
@@ -33,4 +36,9 @@ class Slack:
             raise exceptions.MessageNotSend
 
     def get_messages(self):
+        """Lists all sent messages.
+
+        Returns:
+            List: Message objects
+        """
         return self._messages[:]
