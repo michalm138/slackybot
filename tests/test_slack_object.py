@@ -32,6 +32,17 @@ def test_send_message_wrong_channel():
         slack.send_message(channel=str(uuid.uuid4()), text='Unit test message')
 
 
+def test_send_message_missing_channel():
+    with pytest.raises(exceptions.ChannelNotFound):
+        slack = Slack(token=os.getenv('SLACK_TOKEN'))
+        slack.send_message(text='Unit test message')
+
+
+def test_send_message_with_default_channel():
+    slack = Slack(token=os.getenv('SLACK_TOKEN'), default_channel='tests')
+    slack.send_message(text='Unit test message default channel')
+
+
 def test_send_message_empty_text():
     with pytest.raises(exceptions.MissingText):
         slack = Slack(token=os.getenv('SLACK_TOKEN'))

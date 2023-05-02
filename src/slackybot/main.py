@@ -5,22 +5,26 @@ from . import exceptions
 
 class Slack:
 
-    def __init__(self, token=None):
+    def __init__(self, token=None, default_channel=''):
         if not token:
             raise exceptions.SlackInitializeError('Missing token')
         self._token = token
         self._messages = []
+        self._default_channel = default_channel
 
     def send_message(self, channel='', text=''):
-        """
-        Send message to the Slack
-        :param channel: (string) Channel name
-        :param text: (string) Text message
-        :return: (object) SlackMessage
+        """Sends simple text message.
+
+        Args:
+            channel (string): Channel name.
+            text (string): Text to be sent.
+
+        Returns:
+            Object: <Message>
         """
         if output := request_handler.post_request(
             config.data['urls']['post_message'],
-            {'channel': channel, 'text': text},
+            {'channel': channel if channel else self._default_channel, 'text': text},
             self._token,
         ):
             if output['ok']:
@@ -33,4 +37,9 @@ class Slack:
             raise exceptions.MessageNotSend
 
     def get_messages(self):
+        """Lists all sent messages.
+
+        Returns:
+            List: Message objects
+        """
         return self._messages[:]
