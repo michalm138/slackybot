@@ -1,5 +1,5 @@
 from .messaging import Message
-from .utilities import request_handler, config, helpers
+from .utilities.request_handler import Request
 from . import exceptions
 
 
@@ -11,6 +11,7 @@ class Slack:
         self._token = token
         self._messages = []
         self._default_channel = default_channel
+        self._request = Request(self._token)
 
     def send_message(self, channel='', text=''):
         """Sends simple text message.
@@ -22,19 +23,19 @@ class Slack:
         Returns:
             Object: <Message>
         """
-        if output := request_handler.post_request(
-            config.data['urls']['post_message'],
-            {'channel': channel if channel else self._default_channel, 'text': text},
-            self._token,
-        ):
-            if output['ok']:
-                slack_message = Message(self._token, channel, text, output)
-                self._messages.append(slack_message)
-                return slack_message
-            else:
-                raise helpers.get_exception(output)
-        else:
-            raise exceptions.MessageNotSend
+
+        self._request.post(
+            url='post_message',
+            data={
+                'icon_url': 'http://lorempixel.com/48/48',
+                'channel': channel if channel else self._default_channel,
+                'text': text
+            },
+            exception=exceptions.MessageNotSend
+        )
+        slack_message = Message(self._token, channel, text, self._request.response)
+        self._messages.append(slack_message)
+        return slack_message
 
     def get_messages(self):
         """Lists all sent messages.

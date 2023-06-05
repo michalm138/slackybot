@@ -1,4 +1,4 @@
-from .utilities import request_handler, config, helpers
+from .utilities.request_handler import Request
 from . import exceptions
 import uuid
 
@@ -11,6 +11,7 @@ class SlackMessage:
         self._ts = data['ts']
         self._channel = data['channel']
         self._deleted = False
+        self._request = Request(self._token)
 
         self.channel = channel
         self.text = text
@@ -30,17 +31,12 @@ class SlackMessage:
         Returns:
             None
         """
-        if output := request_handler.post_request(
-                config.data['urls']['update_message'],
-                {'channel': self._channel, 'ts': self._ts, 'text': text},
-                self._token,
-        ):
-            if output['ok']:
-                self.text = text
-            else:
-                raise helpers.get_exception(output)
-        else:
-            raise exceptions.MessageNotUpdated
+        self._request.post(
+            url='update_message',
+            data={'channel': self._channel, 'ts': self._ts, 'text': text},
+            exception=exceptions.MessageNotUpdated
+        )
+        self.text = text
 
     def delete(self):
         """Deletes the message.
@@ -51,17 +47,12 @@ class SlackMessage:
         if self._deleted:
             raise exceptions.MessageAlreadyDeleted
 
-        if output := request_handler.post_request(
-                config.data['urls']['delete_message'],
-                {'channel': self._channel, 'ts': self._ts},
-                self._token,
-        ):
-            if output['ok']:
-                self._deleted = True
-            else:
-                raise helpers.get_exception(output)
-        else:
-            raise exceptions.MessageNotDeleted
+        self._request.post(
+            url='delete_message',
+            data={'channel': self._channel, 'ts': self._ts},
+            exception=exceptions.MessageNotDeleted
+        )
+        self._deleted = True
 
 
 class Message(SlackMessage):
@@ -80,19 +71,19 @@ class Message(SlackMessage):
             Object: <Reply>
 
         """
-        if output := request_handler.post_request(
-                config.data['urls']['post_message'],
-                {'channel': self.channel, 'thread_ts': self._ts, 'text': text},
-                self._token,
-        ):
-            if output['ok']:
-                reply = Reply(self._token, self.channel, text, output)
-                self._replies.append(reply)
-                return reply
-            else:
-                raise helpers.get_exception(output)
-        else:
-            raise exceptions.MessageNotSend
+        self._request.post(
+            url='post_message',
+            data={
+                'icon_url': 'http://lorempixel.com/48/48',
+                'channel': self.channel,
+                'thread_ts': self._ts,
+                'text': text
+            },
+            exception=exceptions.MessageNotSend
+        )
+        reply = Reply(self._token, self.channel, text, self._request.response)
+        self._replies.append(reply)
+        return reply
 
     def get_replies(self):
         """Lists all sent replies to the message thread.

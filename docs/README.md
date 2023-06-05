@@ -7,7 +7,9 @@
     * [Send reply in the thread](#send-reply-in-the-thread)
     * [List all sent messages](#list-all-sent-messages)
     * [List all sent replies](#list-all-sent-replies)
-* [List of all methods](#list-of-all-methods)
+    * [Update message or reply](#update-message-or-reply)
+    * [Delete message or reply](#delete-message-or-reply)
+* [List of all methods](#list-of-methods-of-all-objects)
 <!-- TOC -->
 
 # Slackybot usage
