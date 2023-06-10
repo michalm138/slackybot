@@ -21,7 +21,7 @@ class Request:
         try:
             response = requests.post(
                 config.data['urls'][url],
-                data=data,
+                json=data,
                 headers=self._headers,
             ).json()
             if response['ok']:

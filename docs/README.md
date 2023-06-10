@@ -85,18 +85,41 @@ reply.delete()
 Deletes the message or reply.
 
 
+### Send alert
+![The alert sample](images/Screenshot%202023-06-09%20113833.png)
+```python
+slack.send_alert(channel='', title='', type='', values={}, mentions=())
+```
+Sends alert message to the channel. It returns the Message object.
+
+**channel** - (string) The channel name. It overwrites the default one if passed in the initialization.  
+**title** - (string) The alert title.  
+**type** - (string) The alert type. Options are: `success`, `warning`, `fail`.  
+**values** - (dict) The alert content. E.g.:
+```python
+{
+    "Field one": "`OK`",
+    "Field two": 123456789,
+    "Field three": "Lorem ipsum..."
+}
+```
+**mentions** - (tuple) People to be mentioned.
+
+_Note: All Message object methods work as well_
+
 ---
 
 
 # List of methods of all objects
 
-| Object  | Method                              | Returns        |
-|---------|-------------------------------------|----------------|
-| Slack   | `send_message(channel='', text='')` | Message object |
-|         | `get_messages()`                    | List           |
-| Message | `update(text='')`                   | -              |
-|         | `send_reply(text='')`               | Reply object   |
-|         | `get_replies()`                     | List           |
-|         | `delete()`                          | -              |
-| Reply   | `update(text='')`                   | -              |
-|         | `delete()`                          | -              |
+| Object  | Method                                                              | Returns        |
+|---------|---------------------------------------------------------------------|----------------|
+| Slack   | `send_message(channel='', text='')`                                 | Message object |
+|         | `send_alert(channel='', title='', type='', values={}, mentions=())` | Message object |
+|         | `get_messages()`                                                    | List           |
+| Message | `update(text='')`                                                   | -              |
+|         | `send_reply(text='')`                                               | Reply object   |
+|         | `get_replies()`                                                     | List           |
+|         | `delete()`                                                          | -              |
+| Reply   | `update(text='')`                                                   | -              |
+|         | `delete()`                                                          | -              |

@@ -1,4 +1,5 @@
 from .utilities.request_handler import Request
+from .utilities import config
 from . import exceptions
 import uuid
 
@@ -74,7 +75,7 @@ class Message(SlackMessage):
         self._request.post(
             url='post_message',
             data={
-                'icon_url': 'http://lorempixel.com/48/48',
+                'icon_url': config.data['default_icon'],
                 'channel': self.channel,
                 'thread_ts': self._ts,
                 'text': text

@@ -12,4 +12,17 @@ data = {
         'no_text': exceptions.MissingText,
         'message_not_found': exceptions.MessageNotFound,
     },
+    'alert': {
+        'colors': {
+            'success': 'good',
+            'warning': 'warning',
+            'fail': 'danger',
+        },
+        'icons': {
+            'success': ':white_check_mark:',
+            'fail': ':x:',
+            'warning': ':warning:',
+        },
+    },
+    'default_icon': 'http://lorempixel.com/48/48',
 }
