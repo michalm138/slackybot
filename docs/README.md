@@ -1,18 +1,22 @@
+# Slackybot usage
 <!-- TOC -->
-* [Slackybot usage](#slackybot-usage)
+* [Initialization](#initialization)
     * [Slack App token scopes](#slack-app-token-scopes)
     * [Importing module](#importing-module)
     * [Initialize the Slack object](#initialize-the-slack-object)
+* [Simple message](#simple-message)
     * [Send message](#send-message)
     * [Send reply in the thread](#send-reply-in-the-thread)
     * [List all sent messages](#list-all-sent-messages)
     * [List all sent replies](#list-all-sent-replies)
     * [Update message or reply](#update-message-or-reply)
     * [Delete message or reply](#delete-message-or-reply)
+* [Alerts](#alerts)
+    * [Send alert](#send-alert)
 * [List of all methods](#list-of-methods-of-all-objects)
 <!-- TOC -->
 
-# Slackybot usage
+## Initialization
 ### Slack App token scopes
 The Slack App should have following token scopes:  
 `channels:join` `channels:read` `chat:write` `chat:write.customize` `chat:write.public`
@@ -34,6 +38,7 @@ Initialize the Slack object.
 **default_channel** - (string) You can specify the default channel - it may be overwritten later.
 
 
+## Simple message
 ### Send message
 ```python
 message = slack.send_message(channel='', text='')
@@ -85,6 +90,7 @@ reply.delete()
 Deletes the message or reply.
 
 
+## Alerts
 ### Send alert
 ![The alert sample](images/Screenshot%202023-06-09%20113833.png)
 ```python
