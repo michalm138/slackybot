@@ -66,3 +66,10 @@ class MissingText(Exception):
     def __init__(self, message="There is no text"):
         self.message = message
         super().__init__(self.message)
+
+
+class WrongAlertType(Exception):
+
+    def __init__(self, message="Wrong the alert type. Possible options: success, fail, warning"):
+        self.message = message
+        super().__init__(self.message)

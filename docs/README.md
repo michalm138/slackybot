@@ -1,16 +1,22 @@
+# Slackybot usage
 <!-- TOC -->
-* [Slackybot usage](#slackybot-usage)
+* [Initialization](#initialization)
     * [Slack App token scopes](#slack-app-token-scopes)
     * [Importing module](#importing-module)
     * [Initialize the Slack object](#initialize-the-slack-object)
+* [Simple message](#simple-message)
     * [Send message](#send-message)
     * [Send reply in the thread](#send-reply-in-the-thread)
     * [List all sent messages](#list-all-sent-messages)
     * [List all sent replies](#list-all-sent-replies)
-* [List of all methods](#list-of-all-methods)
+    * [Update message or reply](#update-message-or-reply)
+    * [Delete message or reply](#delete-message-or-reply)
+* [Alerts](#alerts)
+    * [Send alert](#send-alert)
+* [List of all methods](#list-of-methods-of-all-objects)
 <!-- TOC -->
 
-# Slackybot usage
+## Initialization
 ### Slack App token scopes
 The Slack App should have following token scopes:  
 `channels:join` `channels:read` `chat:write` `chat:write.customize` `chat:write.public`
@@ -32,6 +38,7 @@ Initialize the Slack object.
 **default_channel** - (string) You can specify the default channel - it may be overwritten later.
 
 
+## Simple message
 ### Send message
 ```python
 message = slack.send_message(channel='', text='')
@@ -83,18 +90,42 @@ reply.delete()
 Deletes the message or reply.
 
 
+## Alerts
+### Send alert
+![The alert sample](images/Screenshot%202023-06-09%20113833.png)
+```python
+slack.send_alert(channel='', title='', type='', values={}, mentions=())
+```
+Sends alert message to the channel. It returns the Message object.
+
+**channel** - (string) The channel name. It overwrites the default one if passed in the initialization.  
+**title** - (string) The alert title.  
+**type** - (string) The alert type. Options are: `success`, `warning`, `fail`.  
+**values** - (dict) The alert content. E.g.:
+```python
+{
+    "Field one": "`OK`",
+    "Field two": 123456789,
+    "Field three": "Lorem ipsum..."
+}
+```
+**mentions** - (tuple) People to be mentioned.
+
+_Note: All Message object methods work as well_
+
 ---
 
 
 # List of methods of all objects
 
-| Object  | Method                              | Returns        |
-|---------|-------------------------------------|----------------|
-| Slack   | `send_message(channel='', text='')` | Message object |
-|         | `get_messages()`                    | List           |
-| Message | `update(text='')`                   | -              |
-|         | `send_reply(text='')`               | Reply object   |
-|         | `get_replies()`                     | List           |
-|         | `delete()`                          | -              |
-| Reply   | `update(text='')`                   | -              |
-|         | `delete()`                          | -              |
+| Object  | Method                                                              | Returns        |
+|---------|---------------------------------------------------------------------|----------------|
+| Slack   | `send_message(channel='', text='')`                                 | Message object |
+|         | `send_alert(channel='', title='', type='', values={}, mentions=())` | Message object |
+|         | `get_messages()`                                                    | List           |
+| Message | `update(text='')`                                                   | -              |
+|         | `send_reply(text='')`                                               | Reply object   |
+|         | `get_replies()`                                                     | List           |
+|         | `delete()`                                                          | -              |
+| Reply   | `update(text='')`                                                   | -              |
+|         | `delete()`                                                          | -              |

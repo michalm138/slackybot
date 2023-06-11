@@ -47,3 +47,74 @@ def test_send_message_empty_text():
     with pytest.raises(exceptions.MissingText):
         slack = Slack(token=os.getenv('SLACK_TOKEN'))
         slack.send_message(channel='tests')
+
+
+def test_send_alert_success():
+    slack = Slack(token=os.getenv('SLACK_TOKEN'))
+    slack.send_alert(
+        channel='tests',
+        title='The alert title',
+        type='success',
+        values={
+            'Field one': '`OK`',
+            'Field two': 123456789,
+            'Field three': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+        },
+        mentions=('michalm138',)
+    )
+
+
+def test_send_alert_wrong_type():
+    with pytest.raises(exceptions.WrongAlertType):
+        slack = Slack(token=os.getenv('SLACK_TOKEN'))
+        slack.send_alert(
+            channel='tests',
+            title='The alert title',
+            type='wrong_type',
+            values={
+                'Field one': '`OK`',
+                'Field two': 123456789,
+                'Field three': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+            }
+        )
+
+
+def test_delete_alert():
+    slack = Slack(token=os.getenv('SLACK_TOKEN'))
+    msg = slack.send_alert(
+        channel='tests',
+        title='The alert title',
+        type='warning',
+        values={
+            'Field one': '`OK`',
+            'Field two': 123456789,
+            'Field three': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+        }
+    )
+    msg.delete()
+
+
+def test_send_alert_without_values():
+    slack = Slack(token=os.getenv('SLACK_TOKEN'))
+    slack.send_alert(
+        channel='tests',
+        title='The alert title',
+        type='warning',
+    )
+
+
+def test_send_alert_reply():
+    slack = Slack(token=os.getenv('SLACK_TOKEN'))
+    msg = slack.send_alert(
+        channel='tests',
+        title='The alert title',
+        type='fail',
+        values={
+            'Field one': '`OK`',
+            'Field two': 123456789,
+            'Field three': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+        }
+    )
+    reply = msg.send_reply('Reply in the thread')
+    reply.delete()
+    msg.delete()
