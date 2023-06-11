@@ -101,3 +101,20 @@ def test_send_alert_without_values():
         title='The alert title',
         type='warning',
     )
+
+
+def test_send_alert_reply():
+    slack = Slack(token=os.getenv('SLACK_TOKEN'))
+    msg = slack.send_alert(
+        channel='tests',
+        title='The alert title',
+        type='fail',
+        values={
+            'Field one': '`OK`',
+            'Field two': 123456789,
+            'Field three': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+        }
+    )
+    reply = msg.send_reply('Reply in the thread')
+    reply.delete()
+    msg.delete()
